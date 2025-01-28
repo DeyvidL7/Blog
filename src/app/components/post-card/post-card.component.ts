@@ -8,11 +8,13 @@ import { MaterialModules } from '../../../material.config';
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.scss',
 })
-export class PostCardComponent {
-  @Input() post: any; // Recibe datos del post desde el padre.
-  @Output() deletePost = new EventEmitter<number>(); // Evento para eliminar una publicación.
+export default class PostCardComponent {
+  @Input() post: { id: number; title: string; content: string } | undefined;
+  @Output() deletePost = new EventEmitter<number>();
 
   onDelete() {
-    this.deletePost.emit(this.post.id); // Emitimos el ID del post que se va a eliminar.
+    if (this.post) {
+      this.deletePost.emit(this.post.id);
+    }
   }
 }
