@@ -13,6 +13,11 @@ import { Post } from '../../models/post.model';
 export class PostCardsComponent {
   @Input() post!: Post;
   @Output() deleteRequest = new EventEmitter<number>();
+  @Output() editRequest = new EventEmitter<Post>();
+
+  onEdit(): void {
+    this.editRequest.emit(this.post);
+  }
 
   onDelete(): void {
     this.deleteRequest.emit(this.post.id);

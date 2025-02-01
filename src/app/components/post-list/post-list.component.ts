@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MaterialModules } from '../../../material.config';
 import { PostCardsComponent } from "../post-cards/post-cards.component";
 import { CommonModule } from '@angular/common';
+import { PostFormComponent } from '../post-form/post-form.component';
 
 @Component({
   selector: 'app-post-list',
@@ -16,7 +17,7 @@ import { CommonModule } from '@angular/common';
 export class PostListComponent implements OnInit{
   posts: Post[] = [];
 
-  constructor(private postService: PostService) {
+  constructor(private postService: PostService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -26,16 +27,30 @@ export class PostListComponent implements OnInit{
   }
 
   onAddPost(): void {
-    const newPost: Post = {
-      id: Date.now(),
-      title: 'Nueva publicación',
-      content: 'Contenido de la nueva publicación',
-      author: 'Admin',
-      date: new Date(),
-      comments: []
-    };
-    console.log('PostListComponent: Añadiendo nuevo post:', newPost);
-    this.postService.addPost(newPost);
+    const dialogRef = this.dialog.open(PostFormComponent, {
+      width: '600px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.postService.addPost(result);
+      }
+    });
+  }
+
+  onEditPost(post: Post): void {
+    const dialogRef = this.dialog.open(PostFormComponent, {
+      width: '600px',
+      disableClose: true,
+      data: post
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.postService.updatePost(result);
+      }
+    });
   }
 
   onDeletePost(id: number): void {

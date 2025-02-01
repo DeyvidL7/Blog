@@ -1,18 +1,19 @@
 <div class="container">
-    <mat-toolbar color="primary">
-      <span>Mi Blog Personal</span>
-      <span class="spacer"></span>
-      <button mat-raised-button color="accent" (click)="onAddPost()">
-        <mat-icon>add</mat-icon>
-        Añadir publicación
-      </button>
-    </mat-toolbar>
-  
-    <div class="posts-grid">
-      <app-post-cards
-        *ngFor="let post of posts"
-        [post]="post"
-        (deleteRequest)="onDeletePost($event)"
-      ></app-post-cards>
-    </div>
+  <mat-toolbar color="primary">
+    <span>Mi Blog Personal</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" (click)="onAddPost()">
+      <mat-icon>add</mat-icon>
+      Añadir publicación
+    </button>
+  </mat-toolbar>
+
+  <div class="posts-grid">
+    <app-post-cards
+      *ngFor="let post of posts"
+      [post]="post"
+      (deleteRequest)="onDeletePost($event)"
+      (editRequest)="onEditPost($event)"
+    ></app-post-cards>
   </div>
+</div>
