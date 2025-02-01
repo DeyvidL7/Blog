@@ -1,14 +1,21 @@
 import { Routes } from '@angular/router';
-import { PostlistComponent } from './components/postlist/postlist.component';
-import PostCardComponent from './components/post-card/post-card.component';
+import { PostListComponent } from './components/post-list/post-list.component';
 
 export const routes: Routes = [
+  // {
+  //   path: 'postlist',
+  //   component: PostlistComponent
+  // },
+  // {
+  //   path: 'postCard',
+  //   component: PostCardComponent
+  // },
   {
-    path: 'postlist',
-    component: PostlistComponent
+    path: '',
+    component: PostListComponent 
   },
   {
-    path: 'postCard',
-    component: PostCardComponent
-  },
+    path: '**',
+    redirectTo: ''
+  }
 ];
