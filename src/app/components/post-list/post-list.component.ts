@@ -29,7 +29,9 @@ export class PostListComponent implements OnInit{
   onAddPost(): void {
     const dialogRef = this.dialog.open(PostFormComponent, {
       width: '600px',
-      disableClose: true
+      disableClose: true,
+      autoFocus: 'first-tabbable',
+      restoreFocus: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -43,7 +45,9 @@ export class PostListComponent implements OnInit{
     const dialogRef = this.dialog.open(PostFormComponent, {
       width: '600px',
       disableClose: true,
-      data: post
+      data: post,
+      autoFocus: 'first-tabbable',
+      restoreFocus: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
