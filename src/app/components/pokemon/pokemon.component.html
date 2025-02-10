@@ -1,0 +1,56 @@
+<div class="pokemon-container">
+
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Nombre o ID</mat-label>
+      <input matInput #searchInput placeholder="Ej: Pikachu o 25" (keyup.enter)="searchPokemon(searchInput.value)" />
+    </mat-form-field>
+
+    <button mat-fab color="primary" class="search-button" (click)="searchPokemon(searchInput.value)">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <div class="pokemon-display" *ngIf="selectedPokemon">
+    <mat-card class="pokemon-card">
+      <div class="pokemon-card-content">
+        <div class="pokemon-image-container">
+          <img class="pokemon-img" [src]="selectedPokemon.image" [alt]="selectedPokemon.name" />
+        </div>
+
+        <div class="pokemon-details">
+          <mat-card-header>
+            <mat-card-title class="pokemon-title">{{ selectedPokemon.name | titlecase }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p><mat-icon>bolt</mat-icon> <strong>Tipo:</strong> {{ selectedPokemon.type | titlecase }}</p>
+            <p><mat-icon>height</mat-icon> <strong>Altura:</strong> {{ selectedPokemon.height }} m</p>
+            <p><mat-icon>balance</mat-icon> <strong>Peso:</strong> {{ selectedPokemon.weight }} kg</p>
+          </mat-card-content>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="carousel-container">
+    <button mat-fab color="primary" class="carousel-btn left" (click)="prevSlide()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="carousel">
+      <div class="carousel-slide" *ngFor="let pokemon of visiblePokemon">
+        <mat-card class="pokemon-slide" (click)="searchPokemon(pokemon.name)">
+          <mat-card-content>
+            {{ pokemon.name | titlecase }}
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <button mat-fab color="primary" class="carousel-btn right" (click)="nextSlide()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+</div>

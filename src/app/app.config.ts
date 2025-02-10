@@ -5,13 +5,15 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModules } from '../material.config';
 import { routes } from './app.routes';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(...MaterialModules, BrowserAnimationsModule),
+    importProvidersFrom(...MaterialModules, BrowserAnimationsModule ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideAnimations()
+    provideAnimations(),
+    provideHttpClient(withFetch())
   ],
 };

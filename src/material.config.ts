@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 export const MaterialModules = [
   MatButtonModule,
@@ -18,4 +20,6 @@ export const MaterialModules = [
   MatCardModule,
   MatDialogModule,
   MatCheckboxModule,
+  MatDividerModule,
+  MatGridListModule
 ];
