@@ -42,6 +42,26 @@ export class PostService {
     );
   }
 
+  // Nuevo método para obtener un post por ID
+  getPostById(id: number): Observable<Post | null> {
+    return rxjsFrom(
+      this.supabase.client.from('posts').select('*').eq('id', id).single()
+    ).pipe(
+      map((response) => {
+        if (response.data) {
+          return response.data as Post;
+        }
+        return null;
+      }),
+      catchError((error) => {
+        console.error('Error al cargar el post:', error);
+        return throwError(
+          () => 'Error al cargar el post. Por favor, intente nuevamente.'
+        );
+      })
+    );
+  }
+
   addPost(post: Omit<Post, 'id' | 'created_at'>): Observable<any> {
     return rxjsFrom(
       this.supabase.client.from('posts').insert([

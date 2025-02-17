@@ -2,13 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { catchError, of } from 'rxjs';
 import { MaterialModules } from '../../../material.config';
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 import { PostCardsComponent } from "../post-cards/post-cards.component";
 import { PostFormComponent } from '../post-form/post-form.component';
-import { catchError, of } from 'rxjs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface PaginationEvent {
   pageIndex: number;
