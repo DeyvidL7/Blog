@@ -7,6 +7,8 @@
       </mat-card-subtitle>
     </mat-card-header>
 
+    <img *ngIf="post.image_url" [src]="post.image_url" alt="{{ post.title }}" class="post-detail-image">
+
     <mat-card-content>
       <p class="post-content">{{ post.content }}</p>
     </mat-card-content>

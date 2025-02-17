@@ -24,6 +24,7 @@ export class PostFormComponent {
       title: ['', [Validators.required, Validators.minLength(3)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
       author: ['', Validators.required],
+      image_url: [''],
     });
 
     if (data) {
@@ -39,6 +40,7 @@ export class PostFormComponent {
         title: formValue.title,
         content: formValue.content,
         author: formValue.author,
+        image_url: formValue.image_url || null,
         created_at: this.data?.created_at || new Date().toISOString(),
       };
 

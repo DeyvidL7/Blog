@@ -6,8 +6,10 @@
     </mat-card-subtitle>
   </mat-card-header>
 
+  <img *ngIf="post.image_url" [src]="post.image_url" alt="{{ post.title }}" class="post-image">
+
   <mat-card-content>
-    <p>{{ post.content | slice:0:100 }}{{ post.content.length > 100 ? '...' : '' }}</p>
+    <p class="post-content">{{ post.content }}</p>
   </mat-card-content>
 
   <mat-card-actions>

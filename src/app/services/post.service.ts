@@ -62,6 +62,28 @@ export class PostService {
     );
   }
 
+  updatePost(post: Post): Observable<any> {
+    return rxjsFrom(
+      this.supabase.client
+        .from('posts')
+        .update({
+          title: post.title,
+          content: post.content,
+          author: post.author,
+          image_url: post.image_url || null,
+        })
+        .eq('id', post.id)
+    ).pipe(
+      retry(2),
+      catchError((error) => {
+        console.error('Error al actualizar post:', error);
+        return throwError(
+          () => 'Error al actualizar el post. Por favor, intente nuevamente.'
+        );
+      })
+    );
+  }
+
   addPost(post: Omit<Post, 'id' | 'created_at'>): Observable<any> {
     return rxjsFrom(
       this.supabase.client.from('posts').insert([
@@ -76,27 +98,6 @@ export class PostService {
         console.error('Error al añadir post:', error);
         return throwError(
           () => 'Error al añadir el post. Por favor, intente nuevamente.'
-        );
-      })
-    );
-  }
-
-  updatePost(post: Post): Observable<any> {
-    return rxjsFrom(
-      this.supabase.client
-        .from('posts')
-        .update({
-          title: post.title,
-          content: post.content,
-          author: post.author,
-        })
-        .eq('id', post.id)
-    ).pipe(
-      retry(2),
-      catchError((error) => {
-        console.error('Error al actualizar post:', error);
-        return throwError(
-          () => 'Error al actualizar el post. Por favor, intente nuevamente.'
         );
       })
     );

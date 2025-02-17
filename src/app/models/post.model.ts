@@ -4,6 +4,7 @@ export interface Post {
   content: string;
   author: string;
   created_at: string;
+  image_url?: string | null;
   comments?: Comment[];
 }
 
