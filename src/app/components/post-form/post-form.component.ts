@@ -10,7 +10,7 @@ import { Post } from '../../models/post.model';
   standalone: true,
   imports: [CommonModule, MaterialModules, ReactiveFormsModule],
   templateUrl: './post-form.component.html',
-  styleUrl: './post-form.component.scss'
+  styleUrl: './post-form.component.scss',
 })
 export class PostFormComponent {
   postForm: FormGroup;
@@ -23,7 +23,7 @@ export class PostFormComponent {
     this.postForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
-      author: ['', Validators.required]
+      author: ['', Validators.required],
     });
 
     if (data) {
@@ -34,15 +34,14 @@ export class PostFormComponent {
   onSubmit(): void {
     if (this.postForm.valid) {
       const formValue = this.postForm.value;
-      const post: Post = {
-        id: this.data?.id || Date.now(),
+      const post: Partial<Post> = {
+        ...(this.data?.id && { id: this.data.id }),
         title: formValue.title,
         content: formValue.content,
         author: formValue.author,
-        date: this.data?.date || new Date(),
-        comments: this.data?.comments || []
+        created_at: this.data?.created_at || new Date().toISOString(),
       };
-      
+
       this.dialogRef.close(post);
     }
   }

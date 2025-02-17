@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{ data ? 'Editar' : 'Nueva' }} Publicación</h2>
-    
+
     <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
       <mat-dialog-content>
         <div class="form-container">
@@ -16,7 +16,7 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Contenido</mat-label>
-            <textarea matInput formControlName="content" rows="4" 
+            <textarea matInput formControlName="content" rows="4"
                       placeholder="Ingrese el contenido"></textarea>
             <mat-error *ngIf="postForm.get('content')?.hasError('required')">
               El contenido es requerido
@@ -38,7 +38,7 @@
 
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" 
+        <button mat-raised-button color="primary" type="submit"
                 [disabled]="postForm.invalid">
           {{ data ? 'Actualizar' : 'Crear' }}
         </button>

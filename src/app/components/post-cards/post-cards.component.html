@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>
-      Por {{ post.author }} | {{ post.date | date }}
+      Por {{ post.author }} | {{ post.created_at | date }}
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -11,7 +11,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button color="primary" (click)="onEdit()">  <!-- Asegúrate que esté este evento -->
+    <button mat-button color="primary" (click)="onEdit()">
       <mat-icon>edit</mat-icon>
       Editar
     </button>

@@ -9,11 +9,11 @@
   </mat-toolbar>
 
   <div class="posts-grid">
-    <app-post-cards
-      *ngFor="let post of posts"
-      [post]="post"
-      (deleteRequest)="onDeletePost($event)"
-      (editRequest)="onEditPost($event)"
-    ></app-post-cards>
+    <app-post-cards *ngFor="let post of posts" [post]="post" (deleteRequest)="onDeletePost($event)"
+      (editRequest)="onEditPost($event)"></app-post-cards>
   </div>
+
+<mat-paginator [length]="totalPosts" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage"
+  (page)="onPageChange($event)" aria-label="Seleccionar página">
+</mat-paginator>
 </div>

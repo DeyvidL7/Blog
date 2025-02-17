@@ -1,49 +1,98 @@
 import { Injectable } from '@angular/core';
+import { catchError, map, Observable, retry, from as rxjsFrom, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { SupabaseService } from './supabase.service';
+
+interface PostsResponse {
+  data: Post[];
+  count: number;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostService {
+  constructor(private supabase: SupabaseService) {}
 
-  private posts: Post[] = [];
-  private postsSubject = new BehaviorSubject<Post[]>([]);
+  getPosts(
+    pageIndex: number = 0,
+    pageSize: number = 6
+  ): Observable<PostsResponse> {
+    const from = pageIndex * pageSize;
+    const to = from + pageSize - 1;
 
-  constructor() {
-    this.addPost({
-      id: 1,
-      title: 'Primera publicación',
-      content: '¡Bienvenidos a mi primer post! En este espacio compartiré mis ideas, experiencias y proyectos. Estoy emocionado de empezar este viaje y conectar con más personas que comparten intereses similares. Acompáñame mientras comparto contenido sobre desarrollo de software, tecnología y otros temas que me apasionan.',
-      author: 'David Aruquipa Choque',
-      date: new Date(),
-      comments: []
-    }   
-  );
+    return rxjsFrom(
+      this.supabase.client
+        .from('posts')
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(from, to)
+    ).pipe(
+      map((response) => ({
+        data: (response.data as Post[]) || [],
+        count: response.count || 0,
+      })),
+      retry(3),
+      catchError((error) => {
+        console.error('Error al cargar posts:', error);
+        return throwError(
+          () => 'Error al cargar los posts. Por favor, intente nuevamente.'
+        );
+      })
+    );
   }
 
-  getPosts(): Observable<Post[]> {
-    return this.postsSubject.asObservable();
+  addPost(post: Omit<Post, 'id' | 'created_at'>): Observable<any> {
+    return rxjsFrom(
+      this.supabase.client.from('posts').insert([
+        {
+          ...post,
+          created_at: new Date().toISOString(),
+        },
+      ])
+    ).pipe(
+      retry(2),
+      catchError((error) => {
+        console.error('Error al añadir post:', error);
+        return throwError(
+          () => 'Error al añadir el post. Por favor, intente nuevamente.'
+        );
+      })
+    );
   }
 
-  addPost(post: Post): void {
-    this.posts.push(post);
-    this.postsSubject.next([...this.posts]);
-    console.log('Post añadido:', post);
+  updatePost(post: Post): Observable<any> {
+    return rxjsFrom(
+      this.supabase.client
+        .from('posts')
+        .update({
+          title: post.title,
+          content: post.content,
+          author: post.author,
+        })
+        .eq('id', post.id)
+    ).pipe(
+      retry(2),
+      catchError((error) => {
+        console.error('Error al actualizar post:', error);
+        return throwError(
+          () => 'Error al actualizar el post. Por favor, intente nuevamente.'
+        );
+      })
+    );
   }
 
-  deletePost(id: number): void {
-    this.posts = this.posts.filter(post => post.id !== id);
-    this.postsSubject.next([...this.posts]);
-    console.log('Post eliminado:', id);
-  }
-
-  updatePost(updatedPost: Post): void {
-    const index = this.posts.findIndex(post => post.id === updatedPost.id);
-    if (index !== -1) {
-      this.posts[index] = updatedPost;
-      this.postsSubject.next([...this.posts]);
-      console.log('Post actualizado:', updatedPost);
-    }
+  deletePost(id: number): Observable<any> {
+    return rxjsFrom(
+      this.supabase.client.from('posts').delete().eq('id', id)
+    ).pipe(
+      retry(2),
+      catchError((error) => {
+        console.error('Error al eliminar post:', error);
+        return throwError(
+          () => 'Error al eliminar el post. Por favor, intente nuevamente.'
+        );
+      })
+    );
   }
 }
